@@ -1,7 +1,7 @@
 /* @flow */
 
-import {stat} from 'fs-extra'
-import {exec} from 'promisify-child-process'
+import {stat, readFile} from 'fs-extra'
+import {exec, spawn} from 'promisify-child-process'
 import os from 'os'
 import path from 'path'
 
@@ -9,6 +9,7 @@ type Options = {
   pkg: string,
   username: string,
   password: string,
+  editor?: string,
   organizations?: Array<string>,
 }
 
@@ -30,18 +31,23 @@ function parseRepoUrl(url: string): {owner: string, repo: string} {
   return {owner: result[1], repo: result[2]}
 }
 
+async function getPackageInDir(dir: string): Promise<?string> {
+  try {
+    return JSON.parse(await readFile(path.join(dir, 'package.json'), 'utf8')).name
+  } catch (error) {
+    return null
+  }
+}
+
 export default async function workOnRepo(options: Options): Promise<any> {
-  const {pkg, username, password, organizations} = options
+  const {pkg, username, password, organizations, editor} = options
   const pkgWithoutScope = stripScope(pkg)
   const workDir = path.join(os.homedir(), pkgWithoutScope)
   if (await directoryExists(workDir)) {
-    /* eslint-disable no-console */
-    console.log(`cd ${workDir}`)
-    console.log(`git checkout master`)
-    console.log(`git pull origin master`)
-    console.log(`git pull upstream master`)
-    console.log(`subl .`)
-    /* eslint-enable no-console */
+    const spawnOpts = {cwd: workDir, stdio: 'inherit'}
+    await spawn('git', ['checkout', 'master'], spawnOpts)
+    await spawn('git', ['pull', 'origin', 'master'], spawnOpts)
+    await spawn('git', ['pull', 'upstream', 'master'], spawnOpts)
   } else {
     const octokit = require('@octokit/rest')()
     await octokit.authenticate({
@@ -66,16 +72,23 @@ export default async function workOnRepo(options: Options): Promise<any> {
     }
     if (forkOwner === username) {
       await octokit.repos.fork({owner, repo})
-    } else {
-      await octokit.repos.fork({owner, repo, organization: forkOwner})
     }
-    /* eslint-disable no-console */
-    console.log(`cd ${os.homedir()}`)
-    console.log(`git clone https://github.com/${forkOwner}/${repo}.git`)
-    console.log(`cd ${repo}`)
-    console.log(`git remote add upstream https://github.com/${owner}/${repo}.git`)
-    console.log(`yarn --ignore-scripts`)
-    console.log(`subl .`)
-    /* eslint-enable no-console */
+    await spawn('git', ['clone', `https://github.com/${forkOwner}/${repo}.git`], {cwd: os.homedir(), stdio: 'inherit'})
+    await spawn('git', ['remote', 'add', 'upstream', `https://github.com/${owner}/${repo}.git`], {cwd: workDir, stdio: 'inherit'})
   }
+  // for lerna-style repos, find the subpackage folder
+  let packageDir = workDir
+  if (await getPackageInDir(workDir) !== pkg) {
+    const packagesDir = path.join(workDir, 'packages')
+    if (await directoryExists(packagesDir)) {
+      for (let dir of packagesDir) {
+        if (await getPackageInDir(dir) === pkg) {
+          packageDir = dir
+          break
+        }
+      }
+    }
+  }
+  await spawn('yarn', ['--ignore-scripts'], {cwd: packageDir, stdio: 'inherit'})
+  if (editor) spawn(editor, [packageDir], {cwd: packageDir, detached: true})
 }
