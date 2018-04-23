@@ -1,5 +1,5 @@
 {
-  "name": "work-on-repo",
+  "name": "work-on-pkg",
   "version": "0.0.0-development",
   "description": "my personal script to begin working on a given package, forking it if necessary",
   "main": "lib/index.js",
@@ -40,7 +40,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/jedwards1211/work-on-repo.git"
+    "url": "https://github.com/jedwards1211/work-on-pkg.git"
   },
   "keywords": [
     "es2015"
@@ -48,9 +48,9 @@
   "author": "Andy Edwards",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/jedwards1211/work-on-repo/issues"
+    "url": "https://github.com/jedwards1211/work-on-pkg/issues"
   },
-  "homepage": "https://github.com/jedwards1211/work-on-repo#readme",
+  "homepage": "https://github.com/jedwards1211/work-on-pkg#readme",
   "devDependencies": {
     "@commitlint/cli": "^6.0.2",
     "@commitlint/config-conventional": "^6.0.2",
@@ -83,5 +83,10 @@
     "rimraf": "^2.6.0",
     "semantic-release": "^15.1.4",
     "travis-deploy-once": "^4.3.1"
+  },
+  "dependencies": {
+    "@octokit/rest": "^15.2.6",
+    "fs-extra": "^5.0.0",
+    "promisify-child-process": "^1.0.6"
   }
 }

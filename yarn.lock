@@ -148,6 +148,19 @@
     node-fetch "^2.1.1"
     url-template "^2.0.8"
 
+"@octokit/rest@^15.2.6":
+  version "15.2.6"
+  resolved "https://registry.npmjs.org/@octokit/rest/-/rest-15.2.6.tgz#16226f58fbf0ba88f631848fb622dfe0ad410c0c"
+  dependencies:
+    before-after-hook "^1.1.0"
+    btoa-lite "^1.0.0"
+    debug "^3.1.0"
+    http-proxy-agent "^2.1.0"
+    https-proxy-agent "^2.2.0"
+    lodash "^4.17.4"
+    node-fetch "^2.1.1"
+    url-template "^2.0.8"
+
 "@semantic-release/commit-analyzer@^5.0.0":
   version "5.0.0"
   resolved "https://registry.npmjs.org/@semantic-release/commit-analyzer/-/commit-analyzer-5.0.0.tgz#767a2055b5cd0a67421b1d504f3ca7db97055c42"
@@ -4407,6 +4420,10 @@ process-nextick-args@~1.0.6:
 progress@^1.1.8:
   version "1.1.8"
   resolved "https://registry.npmjs.org/progress/-/progress-1.1.8.tgz#e260c78f6161cdd9b0e56cc3e0a85de17c7a57be"
+
+promisify-child-process@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.npmjs.org/promisify-child-process/-/promisify-child-process-1.0.6.tgz#1a1f60ee62e7699e3f5744dfaed48ef76548652a"
 
 protocols@^1.1.0, protocols@^1.4.0:
   version "1.4.6"
