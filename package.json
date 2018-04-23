@@ -1,7 +1,7 @@
 {
-  "name": "es2015-library-skeleton",
+  "name": "work-on-repo",
   "version": "0.0.0-development",
-  "description": "my personal ES2015 library project skeleton",
+  "description": "my personal script to begin working on a given package, forking it if necessary",
   "main": "lib/index.js",
   "scripts": {
     "lint": "eslint src test --cache",
@@ -40,7 +40,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/jedwards1211/es2015-library-skeleton.git"
+    "url": "https://github.com/jedwards1211/work-on-repo.git"
   },
   "keywords": [
     "es2015"
@@ -48,9 +48,9 @@
   "author": "Andy Edwards",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/jedwards1211/es2015-library-skeleton/issues"
+    "url": "https://github.com/jedwards1211/work-on-repo/issues"
   },
-  "homepage": "https://github.com/jedwards1211/es2015-library-skeleton#readme",
+  "homepage": "https://github.com/jedwards1211/work-on-repo#readme",
   "devDependencies": {
     "@commitlint/cli": "^6.0.2",
     "@commitlint/config-conventional": "^6.0.2",
